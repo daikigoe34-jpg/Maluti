@@ -38,6 +38,16 @@ class Config:
     # ── LINE Notify ──
     LINE_NOTIFY_TOKEN: str = ""
 
+    # ── ループ制御 ──
+    LOOP_INTERVAL_SEC: int = 60
+    MAX_CONSECUTIVE_ERRORS: int = 5
+    ERROR_RETRY_INTERVAL_SEC: int = 30
+
+    # ── 戦略 ──
+    STRATEGY_NAME: str = "grid_trade"
+    GRID_COUNT: int = 5
+    GRID_RANGE_PCT: float = 0.10  # ±5%（合計10%レンジ）
+
     # ── ログ ──
     LOG_LEVEL: str = "DEBUG"
     LOG_FILE: str = "logs/bot.log"
@@ -52,6 +62,12 @@ class Config:
             BITBANK_API_SECRET=os.getenv("BITBANK_API_SECRET", ""),
             LINE_NOTIFY_TOKEN=os.getenv("LINE_NOTIFY_TOKEN", ""),
             LOG_LEVEL=os.getenv("LOG_LEVEL", "DEBUG"),
+            LOOP_INTERVAL_SEC=int(os.getenv("LOOP_INTERVAL_SEC", "60")),
+            MAX_CONSECUTIVE_ERRORS=int(os.getenv("MAX_CONSECUTIVE_ERRORS", "5")),
+            ERROR_RETRY_INTERVAL_SEC=int(os.getenv("ERROR_RETRY_INTERVAL_SEC", "30")),
+            STRATEGY_NAME=os.getenv("STRATEGY_NAME", "grid_trade"),
+            GRID_COUNT=int(os.getenv("GRID_COUNT", "5")),
+            GRID_RANGE_PCT=float(os.getenv("GRID_RANGE_PCT", "0.10")),
         )
 
     def validate(self) -> None:

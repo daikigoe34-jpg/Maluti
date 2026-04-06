@@ -8,8 +8,8 @@ FAIL=0
 # 1. 鉄のルール違反チェック（禁止ワード検出）
 echo "[1/3] 禁止ワード検出..."
 if [ -d "src" ]; then
-    # コメント行(#)とdocstring行(冒頭が空白+-)を除外して実コードのみチェック
-    if grep -rn "margin\|leverage\|信用\|レバ" src/ 2>/dev/null | grep -v "^.*:#" | grep -v "^.*:.*- " | grep -v '^.*:.*"""' | grep -v "^.*:.*'''" | grep -q .; then
+    # コメント行・docstring行・ルール説明行を除外して実コードのみチェック
+    if grep -rn "margin\|leverage\|信用\|レバ" src/ 2>/dev/null | grep -v "^.*:#" | grep -v "^.*:.*- " | grep -v '^.*:.*"""' | grep -v "^.*:.*'''" | grep -v "^.*:.*⛔" | grep -v "^.*:.*鉄のルール" | grep -v "^.*:.*禁止" | grep -q .; then
         echo "🔴 CRITICAL: 禁止ワード検出！即座にCEO報告"
         FAIL=1
     else

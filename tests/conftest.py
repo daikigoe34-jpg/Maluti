@@ -27,8 +27,8 @@ def risk_limits() -> RiskLimits:
 
 
 @pytest.fixture
-def risk_manager(risk_limits: RiskLimits) -> RiskManager:
-    return RiskManager(limits=risk_limits)
+def risk_manager(risk_limits: RiskLimits, tmp_path: Path) -> RiskManager:
+    return RiskManager(limits=risk_limits, db_path=tmp_path / "test_risk.db")
 
 
 @pytest.fixture
