@@ -97,10 +97,15 @@ def run_bot(config: Config | None = None) -> None:
             logger.info(f"[LOOP #{loop_count}] BTC/JPY = ¥{price:,.0f}")
             consecutive_errors = 0  # 成功したらリセット
 
-            # [STEP 2] 日次損失チェック
+            # [STEP 2] 日次・月次損失チェック
             if not risk_manager.check_daily_limit():
                 logger.critical("[BOT] 日次損失上限超過 → 安全停止")
                 notifier.notify_error("日次損失上限超過 — Bot停止")
+                break
+
+            if not risk_manager.check_monthly_limit():
+                logger.critical("[BOT] 月次損失上限超過 → 安全停止・全面見直し")
+                notifier.notify_error("月次損失上限超過 — Bot停止・全面見直し")
                 break
 
             # [STEP 3] 戦略の内部状態を更新
@@ -172,6 +177,7 @@ def run_bot(config: Config | None = None) -> None:
     )
     notifier.notify_shutdown(stats)
     paper_trader.conn.close()
+    risk_manager.conn.close()
     logger.info("[BOT] 正常終了")
 
 
